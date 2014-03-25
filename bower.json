@@ -1,0 +1,10 @@
+{
+  "name": "bilgecode.github.io",
+  "version": "0.0.1",
+  "dependencies": {
+    "d3": "~3.4.3",
+    "polymer": "~0.2.1",
+    "polymer-elements": "Polymer/polymer-elements#~0.2.1",
+    "bc-d3-polymer": "BilgeCode/bc-d3-polymer"
+  }
+}

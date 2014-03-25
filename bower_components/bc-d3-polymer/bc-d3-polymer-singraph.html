@@ -1,0 +1,175 @@
+<!--
+Copyright 2014 Benjamin W Stookey. All rights reserved.
+Use of this source code is governed by a MIT-style
+license that can be found in the LICENSE file.
+-->
+<!--
+/**
+ * @module bc-d3-polymer
+ */
+/**
+ * bc-d3-polymer-bargraph is a standalone component that can be
+ * used on its own or easily extended.
+ *
+ * @class bc-d3-polymer-singraph
+ */
+/**
+
+  Template:
+    a single svg element - class="chartContainer"
+
+  Events:
+    domainChanged
+    dataChanged
+    widthChanged
+    heightChanged
+
+  Methods:
+    updateScales - updates x and y scales and any other scaled properties
+    clearGraph - removes all child elements of main svg
+    drawGraph - draws the graph
+    updateGraph - applies the domain to the graph
+
+  @todo: 
+    - make more extensible
+      - overridable methods for axis and other properties
+      - argument for interpolation
+ */
+-->
+
+<link rel="import" href="bc-d3-polymer-base.html">
+
+<polymer-element name="bc-d3-polymer-singraph" extends="bc-d3-polymer-base">
+  <template>
+    <style>
+    :host .chartContainer {
+      background-color: #ccccdd;
+      border: 2px solid #ffffff;
+      margin: 0px;
+    }
+    :host .tide-chart {
+/*        fill: #446687;*/
+      fill: steelblue;
+      stroke: white;
+      stroke-width: 2px;
+    }
+    
+    :host .axis path, :host .axis line {
+      fill: none;
+    	stroke: #000;
+     	shape-rendering: crispEdges;
+    }
+    
+    :host .chartContainer text {
+      font: 10px sans-serif;
+      text-anchor: middle;
+      fill: steelblue;
+    }
+    
+    :host g.context g.axis path {
+    	stroke-opacity: 0;
+    }
+
+    :host g.context g.axis line {
+    	stroke-opacity: .1;
+    }
+    
+    :host g.tick text {
+      color: rgb(0, 0, 0);
+      fill: #000000; 
+    }
+    </style>
+      <svg id="chart" class="chartContainer" style="height: {{height}};width: {{width}}px;"></svg>
+  </template>
+  
+  <script>
+    Polymer('bc-d3-polymer-singraph', {
+      
+      /*
+        @todo:
+          - add styles
+          - allow padding
+          - add and format the axes
+          - add tide points
+      */
+      
+      created: function() {
+        this.super();
+        this.paddingTop = 5;
+        this.paddingBottom = 10;
+      },
+      
+      clearGraph: function() {
+        // Remove all the bars, text and axes
+        // this.area.remove();
+        this.chartContainer.selectAll(".tide-chart").remove();
+        this.chartContainer.selectAll(".axis").remove();
+      },
+      
+      updateGraph: function() {
+        // Updates the elements of the graph
+        if(this.debug) {
+          console.log("Updating Graph.");
+        }
+        
+        this.updateScales();
+        
+        var xS = this.xScale;
+        var yS = this.yScale;
+        var h = this.height;
+        
+        // update the area
+        this.area
+          .x(function(d) { return xS(d.date); })
+          .y0(h)
+          .y1(function(d) { return yS(d.value); });
+        
+        this.chartContainer
+          .select("path")
+          .data([this.data])
+          .attr("d", this.area);
+          
+        // Update the y axis
+        this.yAxis.scale(yS);
+        this.chartContainer.selectAll("g.y")
+          .call(this.yAxis);
+      },
+      
+      createGraph: function() {
+        if(this.debug) {
+          console.log("DRAWING CHART");
+          console.log("width" + this.width);
+          console.log("height" + this.height);
+        }
+        
+        this.clearGraph();
+        this.updateScales();
+      
+        var xS = this.xScale;
+        var yS = this.yScale;
+        var h = this.height;
+        
+        // create the area
+        this.area = d3.svg.area()
+          .interpolate("cardinal")
+          .x(function(d) { return xS(d.date); })
+          .y0(h)
+          .y1(function(d) { return yS(d.value); });
+          
+        // Add it to the page
+        this.chartContainer.append("path")
+          .data([this.data])
+          .attr("class", "tide-chart")
+          .attr("d", this.area);
+          
+        this.yAxis = d3.svg.axis().scale(yS).orient("right").ticks(3);
+    	  this.chartContainer.append("g")
+          .attr("class", "y axis")
+          .attr("transform", "translate(5,0)")
+          .call(this.yAxis);
+
+        this.updateGraph();
+      }
+    });
+  </script>
+</polymer-element>

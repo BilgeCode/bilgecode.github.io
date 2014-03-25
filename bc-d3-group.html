@@ -1,0 +1,111 @@
+<link rel="import" href="bower_components/bc-d3-polymer/bc-d3-polymer-bargraph.html">
+<link rel="import" href="bower_components/bc-d3-polymer/bc-d3-polymer-singraph.html">
+<!-- <link rel="import" href="bc-d3-dateline.html">
+<link rel="import" href="bc-d3-brush.html"> -->
+
+<polymer-element name="bc-d3-group" attributes="width height">
+  <template>
+    <style>
+      :host div {
+        padding: 0px;
+        border: 0px;
+        margin: 0px;
+      }
+    </style>
+    <div style='margin-bottom: 20px;'>
+    <!-- <bc-d3-brush
+      height="28"
+      data="{{data}}"
+      domain="{{domain}}"
+      width="{{width}}"
+      debug="{{debug}}"></bc-d3-brush>
+    </div> -->
+    <div>
+    <bc-d3-polymer-singraph
+      height="{{height}}"
+      data="{{data}}"
+      domain="{{domain}}"
+      width="{{width}}"
+      debug="{{debug}}"></bc-d3-polymer-singraph>
+    </div>
+    <div>
+    <bc-d3-polymer-bargraph
+      height="{{height}}"
+      data="{{data}}"
+      domain="{{domain}}"
+      width="{{width}}"
+      debug="{{debug}}"></bc-d3-polymer-bargraph>
+    </div>
+    <!-- <div>
+    <bc-d3-dateline
+      height="28"
+      data="{{data}}"
+      domain="{{domain}}"
+      width="{{width}}"
+      debug="{{debug}}"></bc-d3-dateline>
+    </div> -->
+  </template>
+  <script>
+    Polymer('bc-d3-group', {
+      created: function() {
+        this.debug = false;
+        var format = d3.time.format("%Y-%m-%d");
+        this.data = [
+          {date: format.parse("2014-02-01"), value: 10, label: "WSW"},
+          {date: format.parse("2014-02-02"), value: 8, label: "SSW"},
+          {date: format.parse("2014-02-03"), value: 6, label: "S"},
+          {date: format.parse("2014-02-04"), value: 4.7, label: "SE"},
+          {date: format.parse("2014-02-05"), value: 8, label: "E"},
+          {date: format.parse("2014-02-06"), value: 6, label: "N"},
+          {date: format.parse("2014-02-07"), value: 4, label: "N"},
+          {date: format.parse("2014-02-08"), value: 8.5, label: "WSW"},
+          {date: format.parse("2014-02-09"), value: 7, label: "WSW"},
+          {date: format.parse("2014-02-10"), value: 1, label: "WSW"}
+        ];
+        this.d1 = 0;
+        this.d2 = this.data.length - 1;
+        this.domain = [this.data[this.d1].date, this.data[this.d2].date];
+
+        if(this.debug) {
+          console.log('passing data:');
+          console.log(this.data);
+        }
+      },
+      dropWidth: function() {
+        this.width = -50 + (this.width*1);
+        this.height = -10 + (this.height*1);
+      },
+      raiseWidth: function() {
+        this.width = 50 + (this.width*1);
+        this.height = 10 + (this.height*1);
+      },
+      shrinkDomain: function() {
+        if (this.d2 > 1) {this.d2--;}
+        this.domain = [this.data[this.d1].date, this.data[this.d2].date];
+        if(this.debug) {
+          console.log("shrinking domain");
+          console.log(this.domain);
+        }
+      },
+      expandDomain: function() {
+        if (this.d2 < this.data.length - 1) {this.d2++;}
+        this.domain = [this.data[this.d1].date, this.data[this.d2].date];
+        if(this.debug) {
+          console.log("expanding domain");
+          console.log(this.domain);
+        }
+      },
+      randomizeData: function() {
+        var max = 15;
+        newData = [];
+        for(i=0;i<this.data.length;i++) {
+          var newD = this.data[i];
+          var newVal = Math.floor((Math.random()*max));
+          newD.value = newVal;
+          newData.push(newD);
+        }
+        this.data = newData;
+      }
+    });
+  </script>
+</polymer-element>

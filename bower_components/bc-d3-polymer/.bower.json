@@ -1,0 +1,14 @@
+{
+  "name": "bc-d3-polymer",
+  "homepage": "https://github.com/BilgeCode/bc-d3-polymer",
+  "_release": "63f4458e24",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "63f4458e245633ddeb073a7999cc1c2b83a539c6"
+  },
+  "_source": "git://github.com/BilgeCode/bc-d3-polymer.git",
+  "_target": "*",
+  "_originalSource": "BilgeCode/bc-d3-polymer",
+  "_direct": true
+}

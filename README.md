@@ -1,4 +1,4 @@
 bilgecode.github.io
 ===================
 
-Displays demos of public BilgeCode projects
+Source for [bilgecode.github.io](http://bilgecode.github.io): demos of public BilgeCode projects.

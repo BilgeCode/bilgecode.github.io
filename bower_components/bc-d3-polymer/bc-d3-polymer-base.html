@@ -1,0 +1,155 @@
+<!--
+Copyright 2014 Benjamin W Stookey. All rights reserved.
+Use of this source code is governed by a MIT-style
+license that can be found in the LICENSE file.
+-->
+<!--
+/**
+ * @module bc-d3-polymer
+ */
+/**
+ * bc-d3-polymer-base is not a standalone component.
+ * It can be used to create d3 graphs with variable dimensions,
+ * data and domains. It defines an interface that can be extended by
+ * other elements for specific graph types.
+ *
+ * @class bc-d3-polymer-base
+ */
+/**
+
+  Template:
+    a single svg element - class="chartContainer"
+
+  Events:
+    domainChanged
+    dataChanged
+    widthChanged
+    heightChanged
+
+  Methods:
+    updateScales - updates x and y scales and any other scaled properties
+    clearGraph - removes all child elements of main svg
+    drawGraph - draws the graph
+    updateGraph - applies the domain to the graph
+
+ */
+-->
+
+<polymer-element name="bc-d3-polymer-base" attributes="data domain height width debug">
+  <template>
+      <svg id="chart" class="chartContainer"></svg>
+  </template>
+  <script>
+    Polymer('bc-d3-polymer-base', {
+      
+      /*
+        @todo:
+          - handle "loading" and "error" conditions
+          - tooltips in data
+      */
+      
+      created: function() {
+        /*
+          Initialize a d3 polymer element
+        */
+        
+        // Load Data
+        if (this.data == undefined) {this.data = null;}
+        // Load dimensions
+        if (this.height == undefined) {this.height = 50;}
+        if (this.width == undefined) {
+          this.width = 100;
+          this.barWidth = this.width/15;
+        }
+        // Load domain
+        if (this.domain == undefined) {this.domain = null;}
+        
+        this.xAxisWidth = 25;
+        this.paddingTop = 0;
+        this.paddingBottom = 0;
+      },
+      
+      ready: function() {
+        // provide general access to the svg object
+        this.chartContainer = d3.select(this.$.chart);
+      },
+      
+      clearGraph: function() {
+        if(this.debug) {
+          console.log("Not implemented: this.clearGraph()");
+        }
+      },
+      
+      createGraph: function() {
+        if(this.debug) {
+          console.log("Not implemented: this.createGraph()");
+        }
+      },
+      
+      getXDomain: function() {
+        if(this.domain == undefined) {
+          return d3.extent(this.data, function(d) { return d.date; });
+        }
+        else {
+          return this.domain;
+        }
+      },
+      
+      getYDomain: function() {
+        return [
+            d3.min(this.data, function(d) { return d.value; }),
+            d3.max(this.data, function(d) { return d.value; })
+          ];
+      },
+      
+      updateScales: function() {
+        // Update x and y scales and the bar width
+        // @todo: memory management (don't recreate)
+        this.xScale = d3.time.scale()
+          .range([this.xAxisWidth, this.width])
+          .domain(this.getXDomain());
+        
+        this.yScale = d3.scale.linear()
+          .range([this.height - this.paddingBottom,0 + this.paddingTop])
+          .domain(this.getYDomain());
+      },
+      
+      updateGraph: function() {
+        if(this.debug) {
+          console.log("Not implemented: this.updateGraph()");
+        }
+      },
+      
+      dataChanged: function() {
+        // when the data is changed, we recreate the graph
+        if(this.debug) {
+          console.log("data changed!");
+          console.log(this.data);
+        }
+        this.createGraph();
+      },
+      
+      widthChanged: function() {
+        if(this.debug) {
+          console.log("WIDTH CHANGED:" + this.width);
+        }
+        this.updateGraph();
+      },
+      
+      domainChanged: function() {
+        if(this.debug) {
+          console.log("Domain Changed: ");
+          console.log(this.domain);
+        }
+        this.updateGraph();
+      },
+      
+      heightChanged: function() {
+        if(this.debug) {
+          console.log("HEIGHT CHANGED: " + this.height);
+        }
+        this.updateGraph();
+      },
+    });
+  </script>
+</polymer-element>
