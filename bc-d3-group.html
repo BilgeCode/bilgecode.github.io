@@ -1,7 +1,6 @@
 <link rel="import" href="bower_components/bc-d3-polymer/bc-d3-polymer-bargraph.html">
 <link rel="import" href="bower_components/bc-d3-polymer/bc-d3-polymer-singraph.html">
-<!-- <link rel="import" href="bc-d3-dateline.html">
-<link rel="import" href="bc-d3-brush.html"> -->
+<link rel="import" href="bower_components/bc-d3-polymer/bc-d3-polymer-multi-singraph.html">
 
 <polymer-element name="bc-d3-group" attributes="width height">
   <template>
@@ -36,13 +35,20 @@
       width="{{width}}"
       debug="{{debug}}"></bc-d3-polymer-bargraph>
     </div>
+    <bc-d3-polymer-multi-singraph
+      height="{{height}}"
+      data="{{multiData}}"
+      domain="{{domain}}"
+      width="{{width}}"
+      debug="{{debug}}"></bc-d3-polymer-multi-singraph>
+    </div>
     <!-- <div>
-    <bc-d3-dateline
+    <bc-d3-xValline
       height="28"
       data="{{data}}"
       domain="{{domain}}"
       width="{{width}}"
-      debug="{{debug}}"></bc-d3-dateline>
+      debug="{{debug}}"></bc-d3-xValline>
     </div> -->
   </template>
   <script>
@@ -51,20 +57,56 @@
         this.debug = false;
         var format = d3.time.format("%Y-%m-%d");
         this.data = [
-          {date: format.parse("2014-02-01"), value: 10, label: "WSW"},
-          {date: format.parse("2014-02-02"), value: 8, label: "SSW"},
-          {date: format.parse("2014-02-03"), value: 6, label: "S"},
-          {date: format.parse("2014-02-04"), value: 4.7, label: "SE"},
-          {date: format.parse("2014-02-05"), value: 8, label: "E"},
-          {date: format.parse("2014-02-06"), value: 6, label: "N"},
-          {date: format.parse("2014-02-07"), value: 4, label: "N"},
-          {date: format.parse("2014-02-08"), value: 8.5, label: "WSW"},
-          {date: format.parse("2014-02-09"), value: 7, label: "WSW"},
-          {date: format.parse("2014-02-10"), value: 1, label: "WSW"}
+          {xVal: format.parse("2014-02-01"), yVal: 10, label: "WSW"},
+          {xVal: format.parse("2014-02-02"), yVal: 8, label: "SSW"},
+          {xVal: format.parse("2014-02-03"), yVal: 6, label: "S"},
+          {xVal: format.parse("2014-02-04"), yVal: 4.7, label: "SE"},
+          {xVal: format.parse("2014-02-05"), yVal: 8, label: "E"},
+          {xVal: format.parse("2014-02-06"), yVal: 6, label: "N"},
+          {xVal: format.parse("2014-02-07"), yVal: 4, label: "N"},
+          {xVal: format.parse("2014-02-08"), yVal: 8.5, label: "WSW"},
+          {xVal: format.parse("2014-02-09"), yVal: 7, label: "WSW"},
+          {xVal: format.parse("2014-02-10"), yVal: 1, label: "WSW"}
+        ];
+        this.multiData = [
+          {
+            data: [
+              {xVal: format.parse("2014-02-01"), yVal: 10, label: "WSW"},
+              {xVal: format.parse("2014-02-02"), yVal: 8, label: "SSW"},
+              {xVal: format.parse("2014-02-03"), yVal: 6, label: "S"},
+              {xVal: format.parse("2014-02-04"), yVal: 4.7, label: "SE"},
+              {xVal: format.parse("2014-02-05"), yVal: 8, label: "E"},
+              {xVal: format.parse("2014-02-06"), yVal: 6, label: "N"},
+              {xVal: format.parse("2014-02-07"), yVal: 4, label: "N"},
+              {xVal: format.parse("2014-02-08"), yVal: 8.5, label: "WSW"},
+              {xVal: format.parse("2014-02-09"), yVal: 7, label: "WSW"},
+              {xVal: format.parse("2014-02-10"), yVal: 1, label: "WSW"}
+            ],
+            fillColor: "steelblue",
+            strokeColor: "white",
+            fillOpacity: "1"
+          },
+          {
+            data: [
+              {xVal: format.parse("2014-02-01"), yVal: 2, label: "WSW"},
+              {xVal: format.parse("2014-02-02"), yVal: 7, label: "SSW"},
+              {xVal: format.parse("2014-02-03"), yVal: 5, label: "S"},
+              {xVal: format.parse("2014-02-04"), yVal: 2.1, label: "SE"},
+              {xVal: format.parse("2014-02-05"), yVal: 12, label: "E"},
+              {xVal: format.parse("2014-02-06"), yVal: 9, label: "N"},
+              {xVal: format.parse("2014-02-07"), yVal: 4, label: "N"},
+              {xVal: format.parse("2014-02-08"), yVal: 4, label: "WSW"},
+              {xVal: format.parse("2014-02-09"), yVal: 3, label: "WSW"},
+              {xVal: format.parse("2014-02-10"), yVal: 8, label: "WSW"}
+            ],
+            fillColor: "#333",
+            strokeColor: "#999",
+            fillOpacity: ".5"
+          }
         ];
         this.d1 = 0;
         this.d2 = this.data.length - 1;
-        this.domain = [this.data[this.d1].date, this.data[this.d2].date];
+        this.domain = [this.data[this.d1].xVal, this.data[this.d2].xVal];
 
         if(this.debug) {
           console.log('passing data:');
@@ -81,7 +123,7 @@
       },
       shrinkDomain: function() {
         if (this.d2 > 1) {this.d2--;}
-        this.domain = [this.data[this.d1].date, this.data[this.d2].date];
+        this.domain = [this.data[this.d1].xVal, this.data[this.d2].xVal];
         if(this.debug) {
           console.log("shrinking domain");
           console.log(this.domain);
@@ -89,7 +131,7 @@
       },
       expandDomain: function() {
         if (this.d2 < this.data.length - 1) {this.d2++;}
-        this.domain = [this.data[this.d1].date, this.data[this.d2].date];
+        this.domain = [this.data[this.d1].xVal, this.data[this.d2].xVal];
         if(this.debug) {
           console.log("expanding domain");
           console.log(this.domain);
@@ -101,10 +143,27 @@
         for(i=0;i<this.data.length;i++) {
           var newD = this.data[i];
           var newVal = Math.floor((Math.random()*max));
-          newD.value = newVal;
+          newD.yVal = newVal;
           newData.push(newD);
         }
         this.data = newData;
+
+        newData = [];
+        for(i=0;i<this.multiData.length;i++) {
+          newData.push({
+            data: [],
+            fillColor: this.multiData[i].fillColor,
+            strokeColor: this.multiData[i].strokeColor,
+            fillOpacity: this.multiData[i].fillOpacity,
+          });
+          // newData.push(this.multiData[i]);
+          // newData[i].data = [];
+          for(j=0;j<this.multiData[i].data.length;j++) {
+            newData[i].data.push(this.multiData[i].data[j]);
+            newData[i].data[j].yVal = Math.floor((Math.random()*max));
+          }
+        }
+        this.multiData = newData;
       }
     });
   </script>
