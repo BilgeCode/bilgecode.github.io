@@ -88,7 +88,7 @@ license that can be found in the LICENSE file.
       
       getXDomain: function() {
         if(this.domain == undefined) {
-          return d3.extent(this.data, function(d) { return d.date; });
+          return d3.extent(this.data, function(d) { return d.xVal; });
         }
         else {
           return this.domain;
@@ -97,18 +97,27 @@ license that can be found in the LICENSE file.
       
       getYDomain: function() {
         return [
-            d3.min(this.data, function(d) { return d.value; }),
-            d3.max(this.data, function(d) { return d.value; })
+            d3.min(this.data, function(d) { return d.yVal; }),
+            d3.max(this.data, function(d) { return d.yVal; })
           ];
       },
       
       updateScales: function() {
         // Update x and y scales and the bar width
         // @todo: memory management (don't recreate)
+
+        this.updateXScale();
+        this.updateYScale();
+
+      },
+      
+      updateXScale: function() {
         this.xScale = d3.time.scale()
           .range([this.xAxisWidth, this.width])
           .domain(this.getXDomain());
-        
+      },
+      
+      updateYScale: function() {
         this.yScale = d3.scale.linear()
           .range([this.height - this.paddingBottom,0 + this.paddingTop])
           .domain(this.getYDomain());

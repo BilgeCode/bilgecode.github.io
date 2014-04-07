@@ -10,20 +10,20 @@
     "web-components"
   ],
   "author": "Polymer Authors <polymer-dev@googlegroups.com>",
-  "version": "0.2.1",
   "main": [
     "polymer.js"
   ],
   "dependencies": {
     "platform": "Polymer/platform#0.2.1"
   },
+  "version": "0.2.1",
   "_release": "0.2.1",
   "_resolution": {
     "type": "version",
     "tag": "0.2.1",
-    "commit": "f27b32e77ead86750ee04a54f7d4e5f96fce79b6"
+    "commit": "62ec4216813ccd9344cf419da846b623892f0884"
   },
-  "_source": "git://github.com/components/polymer.git",
-  "_target": "~0.2.1",
-  "_originalSource": "polymer"
+  "_source": "git://github.com/Polymer/polymer.git",
+  "_target": "0.2.1",
+  "_originalSource": "Polymer/polymer"
 }

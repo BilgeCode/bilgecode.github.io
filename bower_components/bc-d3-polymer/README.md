@@ -1,9 +1,10 @@
 # bc-d3-polymer-charts
 
-BilgeCode uses several polymer components that build simple charts using d3. So far there are two charts available:
+BilgeCode uses several polymer components that build simple charts using d3. So far there are three charts available:
 
   - bc-d3-polymer-bargraph
   - bc-d3-polymer-singraph
+  - bc-d3-polymer-multi-singraph
 
 ## Installation
 

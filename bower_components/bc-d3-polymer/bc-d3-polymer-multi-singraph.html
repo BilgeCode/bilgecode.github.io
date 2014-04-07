@@ -1,0 +1,147 @@
+<!--
+Copyright 2014 Benjamin W Stookey. All rights reserved.
+Use of this source code is governed by a MIT-style
+license that can be found in the LICENSE file.
+-->
+<!--
+/**
+ * @module bc-d3-polymer
+ */
+/**
+ * bc-d3-polymer-multi-singraph extends bc-d3-polymer-singraph
+ * to display overlayed sin-graphs
+ *
+ * Data is now an object of the form:
+ *  {[
+ *    {
+ *      data: [],
+ *      fillColor: ###,
+ *      strokeColor: ###,
+ *      fillOpacity: #.#
+ *    },
+ *    {
+ *      data: [],
+ *      fillColor: ###,
+ *      strokeColor: ###,
+ *      fillOpacity: #.#
+ *    }
+ *  ]}
+ *
+ * @class bc-d3-polymer-multi-singraph
+ */
+/**
+
+  Template:
+    a single svg element - class="chartContainer"
+
+  Events:
+    domainChanged
+    dataChanged
+    widthChanged
+    heightChanged
+
+  Methods:
+    updateScales - updates x and y scales and any other scaled properties
+    clearGraph - removes all child elements of main svg
+    drawGraph - draws the graph
+    updateGraph - applies the domain to the graph
+ */
+-->
+
+<link rel="import" href="bc-d3-polymer-singraph.html">
+
+<polymer-element name="bc-d3-polymer-multi-singraph" extends="bc-d3-polymer-singraph">
+
+  <script>
+    Polymer('bc-d3-polymer-multi-singraph', {
+      
+      getXDomain: function() {
+        if(this.domain == undefined) {
+          var allExtents = [];
+          var e = null;
+          for(var i=0; i<this.data.length; i++) {
+            e = d3.extent(this.data[i].data, function(d) { return d.xVal; });
+            allExtents.push(e[0]);
+            allExtents.push(e[1]);
+          }
+          return d3.extent(allExtents);
+        }
+        else {
+          return this.domain;
+        }
+      },
+      
+      getYDomain: function() {
+        var mins = [];
+        var maxs = [];
+        for(var i=0; i<this.data.length; i++) {
+          mins.push(d3.min(this.data[i].data, function(d) { return d.yVal; }));
+          maxs.push(d3.max(this.data[i].data, function(d) { return d.yVal; }));
+        }
+        return [
+          d3.min(mins),
+          d3.max(maxs)  
+        ];
+      },
+      
+      createArea: function() {
+        var xS = this.xScale;
+        var yS = this.yScale;
+        var h = this.height;
+        
+        this.areas = [];
+        // create the areas for each data set
+        for(var i=0; i<this.data.length; i++) {
+          
+          var style = "";
+          if(this.data[i].fillColor) {
+            style += "fill: " + this.data[i].fillColor + ";";
+          }
+          if(this.data[i].strokeColor) {
+            style += "stroke: " + this.data[i].strokeColor + ";";
+          }
+          if(this.data[i].fillOpacity) {
+            style += "opacity: " + this.data[i].fillOpacity + ";";
+          }
+          
+          this.areas.push(
+            d3.svg.area()
+              .interpolate("cardinal")
+              .x(function(d) { return xS(d.xVal); })
+              .y0(h)
+              .y1(function(d) { return yS(d.yVal); })
+          );
+          
+          // var d = this.data[i].data;
+          // Add it to the page
+          this.chartContainer.append("path")
+            .data([this.data[i].data])
+            .attr("class", "sin-chart sinpath" + i)
+            .attr("style", style)
+            .attr("d", this.areas[i]);
+        }
+      },
+      
+      updateArea: function() {
+        
+        var xS = this.xScale;
+        var yS = this.yScale;
+        var h = this.height;
+        
+        // update the areas
+        for(var i=0; i<this.data.length; i++) {
+          this.areas[i]
+            .x(function(d) { return xS(d.xVal); })
+            .y0(h)
+            .y1(function(d) { return yS(d.yVal); });
+        
+          // var d = this.data[i].data;
+          this.chartContainer
+            .select(".sinpath" + i)
+            .data([this.data[i].data])
+            .attr("d", this.areas[i]);
+        }
+      }
+    });
+  </script>
+</polymer-element>

@@ -112,7 +112,7 @@ license that can be found in the LICENSE file.
       },
       
       getYDomain: function() {
-        return [0,d3.max(this.data, function(d) { return d.value; })];
+        return [0,d3.max(this.data, function(d) { return d.yVal; })];
       },
       
       updateScales: function() {
@@ -150,21 +150,21 @@ license that can be found in the LICENSE file.
         // Update the bars
         this.chartContainer.selectAll(".bar")
           .data(this.data)
-          .attr("x", function(d){return xS(d.date) - (bW / 2);})
-          .attr("y", function(d) { return yS(d.value); })
+          .attr("x", function(d){return xS(d.xVal) - (bW / 2);})
+          .attr("y", function(d) { return yS(d.yVal); })
           .attr("width", bW)
-          .attr("height", function(d) { return adjustedHeight - yS(d.value); });
+          .attr("height", function(d) { return adjustedHeight - yS(d.yVal); });
         
         // Update the text
         this.chartContainer.selectAll(".bar-text-value")
           .data(this.data)
           .attr("y", this.height - this.paddingBottom + 4)
-          .attr("x", function(d){return xS(d.date);});
+          .attr("x", function(d){return xS(d.xVal);});
           
         this.chartContainer.selectAll(".bar-text-label")
           .data(this.data)
           .attr("y", this.height - this.paddingBottom + this.lineHeight + 4)
-          .attr("x", function(d){return xS(d.date);});
+          .attr("x", function(d){return xS(d.xVal);});
 
         // Update the x axis
         // this.xAxis.scale(xS);
@@ -221,7 +221,7 @@ license that can be found in the LICENSE file.
         bar.append("text")
           .attr("dy", ".75em")
           .attr("class", "bar-text-value")
-          .text(function(d) { return d.value});
+          .text(function(d) { return d.yVal});
         
         bar.append("text")
           .attr("dy", ".75em")

@@ -8,7 +8,7 @@ license that can be found in the LICENSE file.
  * @module bc-d3-polymer
  */
 /**
- * bc-d3-polymer-bargraph is a standalone component that can be
+ * bc-d3-polymer-singraph is a standalone component that can be
  * used on its own or easily extended.
  *
  * @class bc-d3-polymer-singraph
@@ -47,7 +47,7 @@ license that can be found in the LICENSE file.
       border: 2px solid #ffffff;
       margin: 0px;
     }
-    :host .tide-chart {
+    :host .sin-chart {
 /*        fill: #446687;*/
       fill: steelblue;
       stroke: white;
@@ -90,7 +90,6 @@ license that can be found in the LICENSE file.
           - add styles
           - allow padding
           - add and format the axes
-          - add tide points
       */
       
       created: function() {
@@ -102,7 +101,7 @@ license that can be found in the LICENSE file.
       clearGraph: function() {
         // Remove all the bars, text and axes
         // this.area.remove();
-        this.chartContainer.selectAll(".tide-chart").remove();
+        this.chartContainer.selectAll(".sin-chart").remove();
         this.chartContainer.selectAll(".axis").remove();
       },
       
@@ -113,6 +112,12 @@ license that can be found in the LICENSE file.
         }
         
         this.updateScales();
+        this.updateArea();
+        this.updateAxes();
+
+      },
+      
+      updateArea: function() {
         
         var xS = this.xScale;
         var yS = this.yScale;
@@ -120,17 +125,19 @@ license that can be found in the LICENSE file.
         
         // update the area
         this.area
-          .x(function(d) { return xS(d.date); })
+          .x(function(d) { return xS(d.xVal); })
           .y0(h)
-          .y1(function(d) { return yS(d.value); });
+          .y1(function(d) { return yS(d.yVal); });
         
         this.chartContainer
           .select("path")
           .data([this.data])
           .attr("d", this.area);
-          
+      },
+      
+      updateAxes: function() {
         // Update the y axis
-        this.yAxis.scale(yS);
+        this.yAxis.scale(this.yScale);
         this.chartContainer.selectAll("g.y")
           .call(this.yAxis);
       },
@@ -145,6 +152,13 @@ license that can be found in the LICENSE file.
         this.clearGraph();
         this.updateScales();
       
+        this.createArea();
+        this.createAxes();
+
+        this.updateGraph();
+      },
+      
+      createArea: function() {
         var xS = this.xScale;
         var yS = this.yScale;
         var h = this.height;
@@ -152,23 +166,24 @@ license that can be found in the LICENSE file.
         // create the area
         this.area = d3.svg.area()
           .interpolate("cardinal")
-          .x(function(d) { return xS(d.date); })
+          .x(function(d) { return xS(d.xVal); })
           .y0(h)
-          .y1(function(d) { return yS(d.value); });
+          .y1(function(d) { return yS(d.yVal); });
           
         // Add it to the page
         this.chartContainer.append("path")
           .data([this.data])
-          .attr("class", "tide-chart")
+          .attr("class", "sin-chart")
           .attr("d", this.area);
-          
-        this.yAxis = d3.svg.axis().scale(yS).orient("right").ticks(3);
+      },
+      
+      createAxes: function() {
+        this.yAxis = d3.svg.axis().scale(this.yScale).orient("right").ticks(3);
+
     	  this.chartContainer.append("g")
           .attr("class", "y axis")
           .attr("transform", "translate(5,0)")
           .call(this.yAxis);
-
-        this.updateGraph();
       }
     });
   </script>
