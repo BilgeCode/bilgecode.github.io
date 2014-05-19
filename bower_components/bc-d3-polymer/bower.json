@@ -1,6 +1,6 @@
 {
   "name": "bc-d3-polymer",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "dependencies": {
     "d3": "~3.4.3",
     "polymer": "~0.2.1",

@@ -35,24 +35,26 @@ license that can be found in the LICENSE file.
  */
 -->
 
-<polymer-element name="bc-d3-polymer-base" attributes="data domain height width debug">
+<polymer-element
+  name="bc-d3-polymer-base"
+  attributes="data domain height width debug centerline">
   <template>
       <svg id="chart" class="chartContainer"></svg>
   </template>
   <script>
     Polymer('bc-d3-polymer-base', {
-      
+
       /*
         @todo:
           - handle "loading" and "error" conditions
           - tooltips in data
       */
-      
+
       created: function() {
         /*
           Initialize a d3 polymer element
         */
-        
+
         // Load Data
         if (this.data == undefined) {this.data = null;}
         // Load dimensions
@@ -63,29 +65,47 @@ license that can be found in the LICENSE file.
         }
         // Load domain
         if (this.domain == undefined) {this.domain = null;}
-        
-        this.xAxisWidth = 25;
+
+        this.yAxisWidth = 25;
         this.paddingTop = 0;
         this.paddingBottom = 0;
+        this.centerline = false;
       },
-      
+
       ready: function() {
         // provide general access to the svg object
         this.chartContainer = d3.select(this.$.chart);
       },
-      
+
+      log: function(logTxt) {
+        // A quick console.log tool
+        if (typeof console == "object") {
+          console.log("[" + this.impl.localName + "] " + logTxt);
+        }
+      },
+
       clearGraph: function() {
         if(this.debug) {
-          console.log("Not implemented: this.clearGraph()");
+          this.log("Not implemented: this.clearGraph()");
         }
       },
-      
+
       createGraph: function() {
         if(this.debug) {
-          console.log("Not implemented: this.createGraph()");
+          this.log("Not implemented: this.createGraph()");
         }
       },
-      
+
+      drawCenterLine: function() {
+        this.chartContainer.append("svg:line")
+          .attr("class", "centerline")
+          .attr("x1", this.width / 2)
+          .attr("y1", 0)
+          .attr("x2", this.width / 2)
+          .attr("y2", this.height)
+          .style("stroke-dasharray", ("7, 3"));
+      },
+
       getXDomain: function() {
         if(this.domain == undefined) {
           return d3.extent(this.data, function(d) { return d.xVal; });
@@ -94,14 +114,14 @@ license that can be found in the LICENSE file.
           return this.domain;
         }
       },
-      
+
       getYDomain: function() {
         return [
             d3.min(this.data, function(d) { return d.yVal; }),
             d3.max(this.data, function(d) { return d.yVal; })
           ];
       },
-      
+
       updateScales: function() {
         // Update x and y scales and the bar width
         // @todo: memory management (don't recreate)
@@ -110,52 +130,58 @@ license that can be found in the LICENSE file.
         this.updateYScale();
 
       },
-      
+
       updateXScale: function() {
         this.xScale = d3.time.scale()
-          .range([this.xAxisWidth, this.width])
+          .range([this.yAxisWidth, this.width-5])
           .domain(this.getXDomain());
       },
-      
+
       updateYScale: function() {
         this.yScale = d3.scale.linear()
           .range([this.height - this.paddingBottom,0 + this.paddingTop])
           .domain(this.getYDomain());
       },
-      
+
       updateGraph: function() {
         if(this.debug) {
-          console.log("Not implemented: this.updateGraph()");
+          this.log("Not implemented: this.updateGraph()");
         }
       },
-      
+
       dataChanged: function() {
         // when the data is changed, we recreate the graph
         if(this.debug) {
-          console.log("data changed!");
-          console.log(this.data);
+          this.log("data changed!");
+          this.log(this.data);
         }
+        this.clearGraph();
         this.createGraph();
       },
-      
+
       widthChanged: function() {
         if(this.debug) {
-          console.log("WIDTH CHANGED:" + this.width);
+          this.log("WIDTH CHANGED:" + this.width);
         }
         this.updateGraph();
+        if(this.centerline) {
+          this.chartContainer.selectAll(".centerline")
+            .attr("x1", this.width / 2)
+            .attr("x2", this.width / 2);
+        }
       },
-      
+
       domainChanged: function() {
         if(this.debug) {
-          console.log("Domain Changed: ");
-          console.log(this.domain);
+          this.log("Domain Changed: ");
+          this.log(this.domain);
         }
         this.updateGraph();
       },
-      
+
       heightChanged: function() {
         if(this.debug) {
-          console.log("HEIGHT CHANGED: " + this.height);
+          this.log("HEIGHT CHANGED: " + this.height);
         }
         this.updateGraph();
       },

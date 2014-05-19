@@ -15,9 +15,24 @@
         background-color: #333;
         color: white;
       }
-      
+
       a, a:hover, a:visited {
         color: lightblue;
+      }
+
+      #multi-sin .d2 {
+        fill: #333;
+        stroke: #999;
+        opacity: .5;
+      }
+
+      .data-point {
+        opacity: .6;
+        fill: white;
+      }
+
+      #multi-sin .data-point-d2 {
+        opacity: .2;
       }
     </style>
   </head>
@@ -46,12 +61,13 @@
       width="{{width}}"
       debug="{{debug}}"&gt;
     &lt;/bc-d3-polymer-bargraph&gt;
-    
+
     &lt;bc-d3-polymer-multi-singraph
       height="{{height}}"
       data="{{multiData}}"
       domain="{{domain}}"
       width="{{width}}"
+      showPoints="true"
       debug="{{debug}}"&gt;
       &lt;/bc-d3-polymer-multi-singraph&gt;
         </pre>
@@ -88,10 +104,10 @@
       <br/><br/>
       <bc-d3-group width="600" height="100" id='bc-container'></bc-d3-group>
     </div>
-    
+
     <script src="bower_components/platform/platform.js"></script>
     <link rel="import" href="bower_components/polymer-layout/polymer-layout.html">
-    
+
     <script src="bower_components/d3/d3.js"></script>
     <link rel="import" href="bc-d3-group.html">
   </body>

@@ -25,6 +25,7 @@
       data="{{data}}"
       domain="{{domain}}"
       width="{{width}}"
+      showPoints="true"
       debug="{{debug}}"></bc-d3-polymer-singraph>
     </div>
     <div>
@@ -36,10 +37,12 @@
       debug="{{debug}}"></bc-d3-polymer-bargraph>
     </div>
     <bc-d3-polymer-multi-singraph
+      id="multi-sin"
       height="{{height}}"
       data="{{multiData}}"
       domain="{{domain}}"
       width="{{width}}"
+      showPoints="true"
       debug="{{debug}}"></bc-d3-polymer-multi-singraph>
     </div>
     <!-- <div>
@@ -82,9 +85,10 @@
               {xVal: format.parse("2014-02-09"), yVal: 7, label: "WSW"},
               {xVal: format.parse("2014-02-10"), yVal: 1, label: "WSW"}
             ],
-            fillColor: "steelblue",
-            strokeColor: "white",
-            fillOpacity: "1"
+            className: "d1"
+            // fillColor: "steelblue",
+            // strokeColor: "white",
+            // fillOpacity: "1"
           },
           {
             data: [
@@ -99,9 +103,10 @@
               {xVal: format.parse("2014-02-09"), yVal: 3, label: "WSW"},
               {xVal: format.parse("2014-02-10"), yVal: 8, label: "WSW"}
             ],
-            fillColor: "#333",
-            strokeColor: "#999",
-            fillOpacity: ".5"
+            className: "d2"
+            // fillColor: "#333",
+            // strokeColor: "#999",
+            // fillOpacity: ".5"
           }
         ];
         this.d1 = 0;
@@ -152,9 +157,7 @@
         for(i=0;i<this.multiData.length;i++) {
           newData.push({
             data: [],
-            fillColor: this.multiData[i].fillColor,
-            strokeColor: this.multiData[i].strokeColor,
-            fillOpacity: this.multiData[i].fillOpacity,
+            className: this.multiData[i].className
           });
           // newData.push(this.multiData[i]);
           // newData[i].data = [];

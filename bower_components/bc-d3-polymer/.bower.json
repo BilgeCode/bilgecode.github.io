@@ -1,19 +1,19 @@
 {
   "name": "bc-d3-polymer",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "dependencies": {
     "d3": "~3.4.3",
     "polymer": "~0.2.1",
     "polymer-elements": "Polymer/polymer-elements#~0.2.1"
   },
   "homepage": "https://github.com/BilgeCode/bc-d3-polymer",
-  "_release": "0.0.5",
+  "_release": "0.0.6",
   "_resolution": {
     "type": "version",
-    "tag": "0.0.5",
-    "commit": "f3f1d492834f759b12c716da453e11cf54c0f996"
+    "tag": "0.0.6",
+    "commit": "fa530d855ee322c553dbacbb8ca3ff525006b924"
   },
   "_source": "git://github.com/BilgeCode/bc-d3-polymer.git",
-  "_target": "~0.0.5",
+  "_target": "~0.0.6",
   "_originalSource": "BilgeCode/bc-d3-polymer"
 }

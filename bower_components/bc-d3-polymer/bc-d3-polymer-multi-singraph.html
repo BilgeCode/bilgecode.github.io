@@ -15,12 +15,11 @@ license that can be found in the LICENSE file.
  *  {[
  *    {
  *      data: [],
- *      fillColor: ###,
- *      strokeColor: ###,
- *      fillOpacity: #.#
+ *      className:
  *    },
  *    {
  *      data: [],
+ *      className:
  *      fillColor: ###,
  *      strokeColor: ###,
  *      fillOpacity: #.#
@@ -54,7 +53,7 @@ license that can be found in the LICENSE file.
 
   <script>
     Polymer('bc-d3-polymer-multi-singraph', {
-      
+
       getXDomain: function() {
         if(this.domain == undefined) {
           var allExtents = [];
@@ -70,7 +69,7 @@ license that can be found in the LICENSE file.
           return this.domain;
         }
       },
-      
+
       getYDomain: function() {
         var mins = [];
         var maxs = [];
@@ -80,66 +79,48 @@ license that can be found in the LICENSE file.
         }
         return [
           d3.min(mins),
-          d3.max(maxs)  
+          d3.max(maxs)
         ];
       },
-      
+
       createArea: function() {
-        var xS = this.xScale;
-        var yS = this.yScale;
-        var h = this.height;
-        
+
         this.areas = [];
         // create the areas for each data set
         for(var i=0; i<this.data.length; i++) {
-          
-          var style = "";
-          if(this.data[i].fillColor) {
-            style += "fill: " + this.data[i].fillColor + ";";
-          }
-          if(this.data[i].strokeColor) {
-            style += "stroke: " + this.data[i].strokeColor + ";";
-          }
-          if(this.data[i].fillOpacity) {
-            style += "opacity: " + this.data[i].fillOpacity + ";";
-          }
-          
+
           this.areas.push(
-            d3.svg.area()
-              .interpolate("cardinal")
-              .x(function(d) { return xS(d.xVal); })
-              .y0(h)
-              .y1(function(d) { return yS(d.yVal); })
-          );
-          
-          // var d = this.data[i].data;
-          // Add it to the page
-          this.chartContainer.append("path")
-            .data([this.data[i].data])
-            .attr("class", "sin-chart sinpath" + i)
-            .attr("style", style)
-            .attr("d", this.areas[i]);
+            this.drawArea(this.data[i].data,this.data[i].className)
+          )
+
+          if(this.showPoints) {
+            this.drawPoints(this.data[i].data, this.data[i].className);
+          }
+        }
+
+        if(this.centerline) {
+          this.drawCenterLine();
         }
       },
-      
+
       updateArea: function() {
-        
+
         var xS = this.xScale;
         var yS = this.yScale;
         var h = this.height;
-        
+
         // update the areas
         for(var i=0; i<this.data.length; i++) {
-          this.areas[i]
-            .x(function(d) { return xS(d.xVal); })
-            .y0(h)
-            .y1(function(d) { return yS(d.yVal); });
-        
-          // var d = this.data[i].data;
-          this.chartContainer
-            .select(".sinpath" + i)
-            .data([this.data[i].data])
-            .attr("d", this.areas[i]);
+
+          this.redrawArea(
+            this.areas[i],
+            this.data[i].data,
+            this.data[i].className
+          );
+
+          if(this.showPoints) {
+            this.redrawPoints(this.data[i].data, this.data[i].className);
+          }
         }
       }
     });

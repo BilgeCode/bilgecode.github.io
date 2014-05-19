@@ -132,10 +132,10 @@ license that can be found in the LICENSE file.
       updateGraph: function() {
         // Updates the elements of the graph
         if(this.debug) {
-          console.log("Updating Graph.");
+          this.log("Updating Graph.");
         }
         if(this.data == undefined || this.data == null) {
-          console.log("not doing. no data.")
+          this.log("not doing. no data.")
           return;
         }
         
@@ -186,16 +186,16 @@ license that can be found in the LICENSE file.
         // this.updateGraph()
         
         if(this.debug) {
-          console.log("DRAWING CHART");
+          this.log("DRAWING CHART");
           // Should destroy previous content if it exists
-          console.log("width" + this.width);
-          console.log("height" + this.height);
+          this.log("width" + this.width);
+          this.log("height" + this.height);
         }
         
 
         if(this.data == undefined || this.data == null) {
           if(this.debug) {
-            console.log("not drawing. no data.")
+            this.log("not drawing. no data.")
           }
           return;
         }
@@ -241,6 +241,10 @@ license that can be found in the LICENSE file.
         //           .attr("class", "y axis")
         //           .attr("transform", "translate(0,0)")
         //           .call(this.yAxis);
+        
+        if(this.centerline) {
+          this.drawCenterLine();
+        }
 
         this.updateGraph();
       }
