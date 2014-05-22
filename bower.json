@@ -2,6 +2,6 @@
   "name": "bilgecode.github.io",
   "version": "0.0.1",
   "dependencies": {
-    "bc-d3-polymer": "BilgeCode/bc-d3-polymer#~0.0.6"
+    "bc-d3-polymer": "BilgeCode/bc-d3-polymer#0.0.7"
   }
 }

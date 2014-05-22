@@ -40,6 +40,6 @@
     "commit": "ac8cf2da0d6297cedf745ecccce47f80d7b80d19"
   },
   "_source": "git://github.com/Polymer/polymer-elements.git",
-  "_target": "~0.2.1",
+  "_target": "0.2.1",
   "_originalSource": "Polymer/polymer-elements"
 }

@@ -16,16 +16,17 @@ limitations under the License.
 <!DOCTYPE html><meta charset="UTF-8">
 
 <script>
-var expected_failures = {
-  'Updated style should be visible despite unrelated errors at t=5s': {
-    firefox: true,
-    message: "Issue with window sizing cause value to be zero rather then 500px."
-  },
-  'Changing the start time of a new player to before the current time should cause it to take effect at t=3s': {
-    msie: true,
-    message: "rgb != rgba"
+var expected_failures = [
+  {
+    browser_configurations: [{ firefox: true }],
+    tests: ['Updated style should be visible despite unrelated errors at t=5ms'],
+    message: 'Issue with window sizing cause value to be zero rather then 500px.',
+  }, {
+    browser_configurations: [{ msie: true }],
+    tests: ['Changing the start time of a new player to before the current time should cause it to take effect at t=3ms'],
+    message: 'IE returns rgba.',
   }
-};
+];
 </script>
 <script src="../bootstrap.js"></script>
 <script>
@@ -61,12 +62,12 @@ timing_test(function() {
   at(1, function() {
     assert_styles(element, {top: '100px'});
 
-    player.source.specified.delay = -1;
+    player.source.timing.delay = -1;
     assert_styles(element, {top: '200px'});
   });
 }, 'Updated style should be visible after change to specified timing');
 
-var group = new SeqGroup([
+var group = new AnimationSequence([
   new Animation(element, {}, 1),
   new Animation(element, [{right: '0px'}, {right: '1000px'}], 10),
 ]);
@@ -75,7 +76,7 @@ timing_test(function() {
   at(2, function() {
     assert_styles(element, {right: '100px'});
 
-    group.children[0].specified.duration = 0.5;
+    group.children[0].timing.duration = 0.5;
     assert_styles(element, {right: '150px'});
 
     group.children[0].remove();
@@ -101,11 +102,11 @@ timing_test(function() {
     assert_styles(element, {bottom: '500px'});
 
     try {
-      var group = new ParGroup();
+      var group = new AnimationGroup();
       group.append(group);
     } catch (e) {
     }
-    player2.source.specified.delay = -1;
+    player2.source.timing.delay = -1;
     assert_styles(element, {bottom: '600px'});
   });
 }, 'Updated style should be visible despite unrelated errors');

@@ -1,9 +1,9 @@
 {
   "name": "bc-d3-polymer",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "dependencies": {
-    "d3": "~3.4.3",
-    "polymer": "~0.2.1",
-    "polymer-elements": "Polymer/polymer-elements#~0.2.1"
+    "d3": "3.4.3",
+    "polymer": "Polymer/polymer#0.2.1",
+    "polymer-elements": "Polymer/polymer-elements#0.2.1"
   }
 }
