@@ -2,114 +2,21 @@
 <html>
   <head>
     <meta charset="UTF8">
-    <title>BilgeCode bc-d3-polymer Web Components</title>
-    <style>
-      div {
-        padding: 8px;
-        border: 3px solid lightblue;
-      }
-      [vertical] ~ div {
-        border: 3px solid orange;
-      }
-      body {
-        background-color: #333;
-        color: white;
-      }
-
-      a, a:hover, a:visited {
-        color: lightblue;
-      }
-
-      #multi-sin .d2 {
-        fill: #333;
-        stroke: #999;
-        opacity: .5;
-      }
-
-      .data-point {
-        opacity: .6;
-        fill: white;
-      }
-
-      #multi-sin .data-point-d2 {
-        opacity: .2;
-      }
-    </style>
+    <title>BilgeCode Web Components</title>
   </head>
   <body>
-    <polymer-layout></polymer-layout>
-    <div flex>
-      <polymer-layout vertical></polymer-layout>
-      <div><h1>Multiple Charts</h1></div>
-      <div>
-        <p>
-          Multiple chart types over a given domain. For example:
-        </p>
-        <pre>
-    &lt;bc-d3-polymer-singraph
-      height="{{height}}"
-      data="{{data}}"
-      domain="{{domain}}"
-      width="{{width}}"
-      showPoints="true"
-      debug="{{debug}}"&gt;
-    &lt;/bc-d3-polymer-singraph&gt;
-
-    &lt;bc-d3-polymer-bargraph
-      height="{{height}}"
-      data="{{data}}"
-      domain="{{domain}}"
-      width="{{width}}"
-      debug="{{debug}}"&gt;
-    &lt;/bc-d3-polymer-bargraph&gt;
-
-    &lt;bc-d3-polymer-multi-singraph
-      height="{{height}}"
-      data="{{multiData}}"
-      domain="{{domain}}"
-      width="{{width}}"
-      showPoints="true"
-      debug="{{debug}}"&gt;
-      &lt;/bc-d3-polymer-multi-singraph&gt;
-        </pre>
-      </div>
-      <div flex>
-        <script>
-        function shrink() {
-          var bcc = document.getElementById("bc-container");
-          bcc.dropWidth();
-        }
-        function expand() {
-          var bcc = document.getElementById("bc-container");
-          bcc.raiseWidth();
-        }
-        function shrinkDomain() {
-          var bcc = document.getElementById("bc-container");
-          bcc.shrinkDomain()
-        }
-        </script>
-        Size:
-        <button onclick="shrink();">Shrink</button>
-        <button onclick="expand();">Expand</button>
-        <br/>
-        Domain:
-        <button onclick="shrinkDomain();">Shrinkd</button>
-        <button onclick="document.getElementById('bc-container').expandDomain();">Expandd</button>
-        <br/>
-        Data:
-        <button onclick="document.getElementById('bc-container').randomizeData();">Randomize</button>
-      </div>
-    </div>
-    <div style='width: 70%;' id='right-column'>
-      <a href="https://github.com/BilgeCode/bilgecode.github.io">See the source</a>
-      <br/><br/>
-      <bc-d3-group width="600" height="100" id='bc-container'></bc-d3-group>
-    </div>
-
-    <script src="bower_components/platform/platform.js"></script>
-    <link rel="import" href="bower_components/polymer-layout/polymer-layout.html">
-
-    <script src="bower_components/d3/d3.js"></script>
-    <link rel="import" href="bc-d3-group.html">
+    <h1>
+      Bilgecode
+      <a href="http://www.polymer-project.org/">
+        Polymer Web Components
+      </a>
+    </h1>
+    <ul>
+      <li>
+        <a href="http://bilgecode.github.io/bc-d3-datebrush/">
+          bc-d3-datebrush
+        </a>
+      </li>
+    </ul>
   </body>
 </html>
